@@ -1,0 +1,52 @@
+<!-- blog/templates/author_posts.html -->
+{% extends 'base.html' %}
+
+{% block title %}Posts by {{ author.username }} - My Blog{% endblock %}
+
+{% block content %}
+<h1 style="margin-bottom: 2rem; color: #333;">Posts by {{ author.username }}</h1>
+
+<p style="color: #666; margin-bottom: 2rem;">
+    {{ posts.count }} post{{ posts.count|pluralize }}
+</p>
+
+{% if posts %}
+    {% for post in posts %}
+    <article class="card">
+        <h2>
+            <a href="{% url 'blog:post_detail' post.id %}">{{ post.title }}</a>
+        </h2>
+        
+        <div class="meta">
+            {{ post.created_at|date:"F d, Y" }}
+            • {{ post.comment_count }} comment{{ post.comment_count|pluralize }}
+        </div>
+        
+        {% if post.categories.all %}
+        <div class="categories">
+            {% for category in post.categories.all %}
+            <a href="{% url 'blog:category_posts' category.id %}" class="category-tag">
+                {{ category.name }}
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="content">
+            {{ post.content|truncatewords:30 }}
+        </div>
+        
+        <a href="{% url 'blog:post_detail' post.id %}" style="color: #667eea; text-decoration: none; font-weight: 500;">
+            Read more →
+        </a>
+    </article>
+    {% endfor %}
+{% else %}
+    <p>No posts by this author yet.</p>
+{% endif %}
+
+<a href="{% url 'blog:index' %}" style="color: #667eea; text-decoration: none;">
+    ← Back to all posts
+</a>
+{% endblock %}
+```

@@ -1,0 +1,35 @@
+============================================================
+DJANGO ORM QUERIES OUTPUT
+============================================================
+
+1. Published posts:
+   Count: 2
+   • First Post by admin
+   • Second Post by admin
+
+2. Posts by user 'john':
+   Count: 0
+
+3. Posts in 'Technology' category:
+   Count: 0
+
+4. Total posts:
+   Count: 2
+
+5. Total comments:
+   Count: 0
+
+6. Posts with no categories:
+   Count: 0
+
+7. 3 Newest posts:
+   • Second Post (2025-12-01 18:23)
+   • First Post (2025-12-01 18:22)
+
+8. Categories (alphabetical):
+   • Python (1 posts)
+   • Web (2 posts)
+
+============================================================
+ALL QUERIES COMPLETED!
+============================================================

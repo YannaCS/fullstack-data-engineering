@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} - My Blog{% endblock %}
+
+{% block content %}
+<article class="card">
+    <h1 style="color: #667eea; margin-bottom: 1rem;">{{ post.title }}</h1>
+    
+    <div class="meta">
+        <span class="author">By {{ post.author.username }}</span>   
+        <span class="date">{{ post.created_at|date:"F d, Y" }}</span>   
+        <span class="views">👁️ {{ post.views }} views</span>  <!-- ADD THIS -->
+    </div>
+    
+    <!-- Display all categories for this post -->
+    {% if post.categories.all %}
+    <div class="categories">
+        {% for category in post.categories.all %}
+        <a href="{% url 'blog:category_posts' category.id %}" class="category-tag">
+            {{ category.name }}
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #eee;">
+    
+    <div class="content" style="margin: 2rem 0;">
+        {{ post.content|linebreaks }}
+    </div>
+</article>
+
+<!-- Comments Section -->
+<div class="card">
+    <h2>Comments ({{ comments.count }})</h2>
+    
+    {% if comments %}
+        {% for comment in comments %}
+        <div class="comment">
+            <div class="author">
+                {{ comment.author.username }} 
+                <span style="color: #999; font-weight: normal; font-size: 0.9rem;">
+                    • {{ comment.created_at|date:"F d, Y" }}
+                </span>
+            </div>
+            <div>{{ comment.content }}</div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p style="color: #666; font-style: italic;">No comments yet. Be the first to comment!</p>
+    {% endif %}
+</div>
+
+<a href="{% url 'blog:index' %}" style="color: #667eea; text-decoration: none;">
+    ← Back to all posts
+</a>
+{% endblock %}
+```

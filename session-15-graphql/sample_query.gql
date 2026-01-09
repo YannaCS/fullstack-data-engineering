@@ -1,0 +1,33 @@
+query {
+	post(id: 2) {
+        id
+        title
+        content
+	}
+    posts {
+        id
+        title
+        content
+        author {
+            id
+            name
+        }
+    }
+    users {
+        id
+        name
+        email
+        posts {
+            id
+            title
+        }
+    }
+}
+
+mutation {
+  createUser(name: "Steven", email: "steven@example.com") {
+   	id
+    name
+    email
+  }
+}

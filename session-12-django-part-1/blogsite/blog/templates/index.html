@@ -1,0 +1,52 @@
+<!-- blog/templates/index.html -->
+{% extends 'base.html' %}
+
+{% block title %}Home - My Blog{% endblock %}
+
+{% block content %}
+<h1 style="margin-bottom: 2rem; color: #333;">Recent Posts</h1>
+
+{% if posts %}
+    {% for post in posts %}
+    <article class="card">
+        <h2>
+            <a href="{% url 'blog:post_detail' post.id %}">{{ post.title }}</a>
+            <!-- NEW: Show "New" badge if published recently -->
+            {% if post.published_recently %}
+                <span class="badge">🆕 New!</span>
+            {% endif %}
+        </h2>
+        
+        <div class="meta">
+            By <a href="{% url 'blog:author_posts' post.author.id %}">{{ post.author.username }}</a>
+            • {{ post.created_at|date:"F d, Y" }}
+            • {{ post.comment_count }} comment{{ post.comment_count|pluralize }}
+        </div>
+        
+        <!-- Display categories -->
+        {% if post.categories.all %}
+        <div class="categories">
+            {% for category in post.categories.all %}
+            <a href="{% url 'blog:category_posts' category.id %}" class="category-tag">
+                {{ category.name }}
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <!-- NEW: Use excerpt instead of manual truncation -->
+        <p>{{ post.get_excerpt }}</p>
+        <!--
+        <div class="content">
+            {{ post.content|truncatewords:50 }}
+        </div>
+    -->
+        <a href="{% url 'blog:post_detail' post.id %}" style="color: #667eea; text-decoration: none; font-weight: 500;">
+            Read more →
+        </a>
+    </article>
+    {% endfor %}
+{% else %}
+    <p>No posts available yet.</p>
+{% endif %}
+{% endblock %}
