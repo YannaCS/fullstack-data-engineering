@@ -1,0 +1,72 @@
+@startuml recommender-architecture
+
+title Real-Time Video Recommendation Data Platform
+
+package "Data Sources" {
+  component "User Interaction Events"
+  component "Video Upload Service"
+  component "Metadata DB"
+}
+
+package "Streaming Ingestion" {
+  component "Kafka Event Bus"
+  component "Schema Registry"
+}
+
+package "Real-Time Processing" {
+  component "Flink Feature Pipeline"
+  component "Online Feature Builder"
+}
+
+package "Batch Data Platform" {
+  component "Data Lake (Delta / Iceberg)"
+  component "Spark Feature Engineering"
+  component "Training Dataset Builder"
+}
+
+package "ML Platform" {
+  component "Model Training"
+  component "Model Registry"
+}
+
+package "Online Serving" {
+  component "Feature Store (Online)"
+  component "Vector Search (ANN)"
+  component "Ranking Model Server"
+}
+
+package "Application Layer" {
+  component "Recommendation API"
+}
+
+package "Analytics" {
+  component "OLAP Engine"
+  component "BI Dashboard"
+}
+
+"User Interaction Events" --> "Kafka Event Bus"
+"Video Upload Service" --> "Kafka Event Bus"
+
+"Kafka Event Bus" --> "Flink Feature Pipeline"
+"Flink Feature Pipeline" --> "Feature Store (Online)"
+
+"Flink Feature Pipeline" --> "Data Lake (Delta / Iceberg)"
+
+"Data Lake (Delta / Iceberg)" --> "Spark Feature Engineering"
+"Spark Feature Engineering" --> "Training Dataset Builder"
+
+"Training Dataset Builder" --> "Model Training"
+"Model Training" --> "Model Registry"
+
+"Model Registry" --> "Ranking Model Server"
+
+"Feature Store (Online)" --> "Recommendation API"
+"Vector Search (ANN)" --> "Recommendation API"
+"Ranking Model Server" --> "Recommendation API"
+
+"Recommendation API" --> "User Interaction Events"
+
+"Data Lake (Delta / Iceberg)" --> "OLAP Engine"
+"OLAP Engine" --> "BI Dashboard"
+
+@enduml
